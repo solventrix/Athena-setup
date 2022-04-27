@@ -18,6 +18,7 @@ services:
       DB_PASSWORD: db_password
       VERBOSITY_LEVEL: verbosity_level
       FILENAME: "therapy.csv:supportivecare.csv:prognosis.csv:mrdassessments.csv:disease_characteristics.csv:demographics.csv"
+      LAST_DATA_EXPORT: date_last_export
 
 networks:
   athena_feder8-net:
