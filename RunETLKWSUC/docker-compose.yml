@@ -17,8 +17,9 @@ services:
       DB_USER: db_username
       DB_PASSWORD: db_password
       VERBOSITY_LEVEL: verbosity_level
+      DATA_SOURCE: data_source
 
 networks:
   athena_athena-net:
     external:
-      name: athena-net
+      name: feder8-net
