@@ -21,6 +21,7 @@
     * the tag name for the Docker Hub image
     * the verbosity level [DEBUG, INFO, WARNING, ERROR]
     * the data source [KUL, AZG]
+    * the date of last export in the following format (double quotes included): "yyyy-mm-dd"
 5. The script will run the ETL code and show the output of the code
 6. The `etl_<datetime>.log` log file will be available in the `log` folder
 7. Review the log file to verify that there is no patient-level information.
