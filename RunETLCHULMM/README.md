@@ -3,7 +3,7 @@
 ## Prerequisites
 1. Docker is installed and running.
 2. docker compose is installed system-wide. Please follow the instructions for installation here: https://docs.docker.com/compose/install/
-3. The user has access to the https://harbor-uat.athenafederation.org repository containing the ETL image.
+3. The user has access to the https://harbor.athenafederation.org repository containing the ETL image.
 4. The ATHENA OMOP CDM database is running in a Docker container named `postgres`:
     * Check this by running `docker ps`. You should see the `postgres` container listed as running and healthy.
 

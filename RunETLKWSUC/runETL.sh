@@ -27,6 +27,6 @@ sed -i -e "s/image_tag/$image_tag/g" docker-compose.yml
 sed -i -e "s/data_source/$data_source/g" docker-compose.yml
 sed -i -e "s/date_last_export/$date_last_export/g" docker-compose.yml
 
-docker login harbor-uat.athenafederation.org
+docker login harbor.athenafederation.org
 docker-compose pull
 docker-compose run --rm --name etl etl

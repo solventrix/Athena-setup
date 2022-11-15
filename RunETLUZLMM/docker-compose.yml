@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   etl:
-    image: harbor-uat.athenafederation.org/etl-uzl-mm/etl:image_tag
+    image: harbor.athenafederation.org/etl-uzl-mm/etl:image_tag
     volumes:
       - "./log:/log"
       - "data_folder:/data"
