@@ -31,7 +31,7 @@ powershell -Command "(Get-Content docker-compose.yml) -replace 'image_tag', '%im
 powershell -Command "(Get-Content docker-compose.yml) -replace 'data_source', '%data_source%' | Set-Content docker-compose.yml"
 powershell -Command "(Get-Content docker-compose.yml) -replace 'date_last_export', '%date_last_export%' | Set-Content docker-compose.yml"
 
-docker login harbor-uat.athenafederation.org
+docker login harbor.athenafederation.org
 docker-compose pull
 docker-compose run --rm --name etl etl
 
