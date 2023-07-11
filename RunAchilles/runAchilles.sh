@@ -1,26 +1,31 @@
 #!/usr/bin/env bash
 set -ex
 
-VERSION=1.0.0
+REGISTRY=harbor.athenafederation.org
+REPOSITORY=distributed-analytics
+IMAGE=achilles
+VERSION=latest
 TAG=$VERSION
+
+echo "Log into Harbor"
+docker login $REGISTRY
+
+echo "Pull latest Achilles image"
+docker pull $REGISTRY/$REPOSITORY/$IMAGE:$TAG
 
 touch achilles.env
 
-echo "DB_HOST=postgres" >> achilles.env
-echo "DB_DATABASE_NAME=OHDSI" >> achilles.env
-echo "FEDER8_CDM_SCHEMA=omopcdm" >> achilles.env
-echo "FEDER8_VOCABULARY_SCHEMA=omopcdm" >> achilles.env
-echo "FEDER8_RESULTS_SCHEMA=results" >> achilles.env
-echo "WEBAPI_SOURCE_NAME=ATHENA OMOP CDM" >> achilles.env
 echo "THERAPEUTIC_AREA=ATHENA" >> achilles.env
-echo "SCRIPT_UUID=b016c8a2-f2c9-43de-b62f-ed1c29a5726d"  >> achilles.env
+# echo "CDM_VERSION=5.3" >> achilles.env
+echo "CDM_VERSION=5.4" >> achilles.env
+echo "EXCLUDED_ANALYSIS_IDS=231,232,931,932,1031,1032,1810,1824,1831,1832"  >> achilles.env
 
 docker run \
 --rm \
 --name achilles \
 -v shared:/var/lib/shared \
 --env-file achilles.env \
---network athena-net \
-harbor-uat.athenafederation.org/distributed-analytics/achilles:$TAG
+--network feder8-net \
+$REGISTRY/$REPOSITORY/$IMAGE:$TAG
 
 rm -rf achilles.env
