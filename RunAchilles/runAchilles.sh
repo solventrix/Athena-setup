@@ -24,6 +24,7 @@ docker run \
 --rm \
 --name achilles \
 -v shared:/var/lib/shared \
+-v ${PWD}/logs:/logs \
 --env-file achilles.env \
 --network feder8-net \
 $REGISTRY/$REPOSITORY/$IMAGE:$TAG
