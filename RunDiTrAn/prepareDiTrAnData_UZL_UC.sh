@@ -22,7 +22,7 @@ echo "combine analysis tables"
 docker exec -it postgres psql -U postgres -d OHDSI -c "DROP TABLE IF EXISTS results.combined_analysis_table_uc;CREATE TABLE results.combined_analysis_table_uc as select *, 'predefined' as event_type from results.predefined_analysis_table_uc union select *, 'derived' as event_type from results.derived_analysis_table_uc;"
 
 echo "run DiTrAn pipeline script"
-docker run --rm --network feder8-net --name disease-explorer-data-preparation -v disease-explorer-config:/pipeline/data --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env DB_ANALYSIS_TABLE_SCHEMA=results --env DB_ANALYSIS_TABLE_NAME=combined_analysis_table_uc --env PIPELINE_CONFIGURATION=uc --env CONFIG_FILENAME=journey_configuration_combined --env LOGGING=INFO harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.0
+docker run --rm --network feder8-net -v ${PWD}/results/ditran:/script/shareable_results --name disease-explorer-data-preparation -v disease-explorer-config:/pipeline/data --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env DB_ANALYSIS_TABLE_SCHEMA=results --env DB_ANALYSIS_TABLE_NAME=combined_analysis_table_uc --env PIPELINE_CONFIGURATION=uc --env CONFIG_FILENAME=journey_configuration_combined --env LOGGING=INFO harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.0
 
 echo "end of pipeline"
 
