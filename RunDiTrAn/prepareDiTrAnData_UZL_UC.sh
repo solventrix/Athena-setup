@@ -11,7 +11,7 @@ mkdir -p ${PWD}/results/derived_analysis
 mkdir -p ${PWD}/results/ditran
 
 echo "run 'predefined' event generator"
-docker run --rm --network feder8-net -v ${PWD}/results/predefined_events:/script//analysis_table_results --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env EVENT_CONFIG_FILENAME=uc_event_model --env STUDY_LOGIC=uzl_uc --env EPISODE_TABLE_SCHEMA=results --env LOGGING=INFO --env EPISODE_TABLE_NAME=predefined_episode_table_uc harbor.athenafederation.org/distributed-analytics/event-generator:0.2.4
+docker run --rm --network feder8-net -v ${PWD}/results/predefined_events:/script/analysis_table_results --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env EVENT_CONFIG_FILENAME=uc_event_model --env STUDY_LOGIC=uzl_uc --env EPISODE_TABLE_SCHEMA=results --env LOGGING=INFO --env EPISODE_TABLE_NAME=predefined_episode_table_uc harbor.athenafederation.org/distributed-analytics/event-generator:0.2.4
 
 echo "run 'derived' event generator"
 docker run --rm --network feder8-net -v ${PWD}/results/derived_events:/script/analysis_table_results --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env STUDY_LOGIC=uzl_uc --env EPISODE_TABLE_SCHEMA=results --env LOGGING=INFO --env EPISODE_TABLE_NAME=derived_episode_table_uc harbor.athenafederation.org/distributed-analytics/event-generator:0.2.4
