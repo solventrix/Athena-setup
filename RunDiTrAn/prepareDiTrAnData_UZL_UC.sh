@@ -8,6 +8,7 @@ mkdir -p ${PWD}/results/predefined_events
 mkdir -p ${PWD}/results/derived_events
 mkdir -p ${PWD}/results/predefined_analysis
 mkdir -p ${PWD}/results/derived_analysis
+mkdir -p ${PWD}/results/hybrid_analysis
 mkdir -p ${PWD}/results/ditran
 
 echo "run 'predefined' event generator"
