@@ -1,7 +1,7 @@
 docker login harbor.athenafederation.org
 
 docker pull harbor.athenafederation.org/distributed-analytics/event-generator:0.2.5
-docker pull harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.3
+docker pull harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.4
 docker pull harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.1
 
 mkdir -p ${PWD}/results/predefined_events
@@ -21,13 +21,13 @@ echo "create table 'results.hybrid_episode_table_uc'"
 docker exec -it postgres psql -U athena_admin -d OHDSI -c "DROP TABLE IF EXISTS results.hybrid_episode_table_uc;CREATE TABLE results.hybrid_episode_table_uc as select * from ( select * from results.derived_episode_table_uc where episode_number = 0 union select * from results.predefined_episode_table_uc where episode_number > 0) hybrid_table where person_id in ( select person_id from results.derived_episode_table_uc where episode_number = 0 );"
 
 echo "create analysis table with predefined events"
-docker run --rm --network feder8-net -v ${PWD}/results/predefined_analysis:/script/results --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env VERSION=1.1.3 --env ANALYSIS_TABLE_SCHEMA=results --env ANALYSIS_TABLE_NAME=predefined_analysis_table_uc --env EXPOSURE_TABLE_SCRIPT=exposure_uc_omop53 --env DERIVATE_TABLE_SCRIPT=derivate_uc --env OUTCOME_TABLE_SCRIPT=outcome_uc --env EPISODE_TABLE_SCHEMA=results --env EPISODE_TABLE_NAME=predefined_episode_table_uc --env COVARIATE_CONFIGURATION=configuration_uc harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.3
+docker run --rm --network feder8-net -v ${PWD}/results/predefined_analysis:/script/results --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env VERSION=1.1.4 --env ANALYSIS_TABLE_SCHEMA=results --env ANALYSIS_TABLE_NAME=predefined_analysis_table_uc --env EXPOSURE_TABLE_SCRIPT=exposure_uc_omop53 --env DERIVATE_TABLE_SCRIPT=derivate_uc --env OUTCOME_TABLE_SCRIPT=outcome_uc --env EPISODE_TABLE_SCHEMA=results --env EPISODE_TABLE_NAME=predefined_episode_table_uc --env COVARIATE_CONFIGURATION=configuration_uc harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.4
 
 echo "create analysis table with derived events"
-docker run --rm --network feder8-net -v ${PWD}/results/derived_analysis:/script/results  --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env VERSION=1.1.3 --env ANALYSIS_TABLE_SCHEMA=results --env ANALYSIS_TABLE_NAME=derived_analysis_table_uc --env EXPOSURE_TABLE_SCRIPT=exposure_uc_omop53 --env DERIVATE_TABLE_SCRIPT=derivate_uc --env OUTCOME_TABLE_SCRIPT=outcome_uc --env EPISODE_TABLE_SCHEMA=results --env EPISODE_TABLE_NAME=derived_episode_table_uc --env COVARIATE_CONFIGURATION=configuration_uc harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.3
+docker run --rm --network feder8-net -v ${PWD}/results/derived_analysis:/script/results  --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env VERSION=1.1.4 --env ANALYSIS_TABLE_SCHEMA=results --env ANALYSIS_TABLE_NAME=derived_analysis_table_uc --env EXPOSURE_TABLE_SCRIPT=exposure_uc_omop53 --env DERIVATE_TABLE_SCRIPT=derivate_uc --env OUTCOME_TABLE_SCRIPT=outcome_uc --env EPISODE_TABLE_SCHEMA=results --env EPISODE_TABLE_NAME=derived_episode_table_uc --env COVARIATE_CONFIGURATION=configuration_uc harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.4
 
 echo "create analysis table with hybrid events"
-docker run --rm --network feder8-net -v ${PWD}/results/hybrid_analysis:/script/results  --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env VERSION=1.1.3 --env ANALYSIS_TABLE_SCHEMA=results --env ANALYSIS_TABLE_NAME=hybrid_analysis_table_uc --env EXPOSURE_TABLE_SCRIPT=exposure_uc_omop53 --env DERIVATE_TABLE_SCRIPT=derivate_uc --env OUTCOME_TABLE_SCRIPT=outcome_uc --env EPISODE_TABLE_SCHEMA=results --env EPISODE_TABLE_NAME=hybrid_episode_table_uc --env COVARIATE_CONFIGURATION=configuration_uc harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.3
+docker run --rm --network feder8-net -v ${PWD}/results/hybrid_analysis:/script/results  --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env VERSION=1.1.4 --env ANALYSIS_TABLE_SCHEMA=results --env ANALYSIS_TABLE_NAME=hybrid_analysis_table_uc --env EXPOSURE_TABLE_SCRIPT=exposure_uc_omop53 --env DERIVATE_TABLE_SCRIPT=derivate_uc --env OUTCOME_TABLE_SCRIPT=outcome_uc --env EPISODE_TABLE_SCHEMA=results --env EPISODE_TABLE_NAME=hybrid_episode_table_uc --env COVARIATE_CONFIGURATION=configuration_uc --env COMPUTE_NEXT_EPISODE='TRUE' harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.4
 
 echo "combine analysis tables"
 docker exec -it postgres psql -U athena_admin -d OHDSI -c "DROP TABLE IF EXISTS results.combined_analysis_table_uc;CREATE TABLE results.combined_analysis_table_uc as select *, 'predefined' as event_type from results.predefined_analysis_table_uc union select *, 'derived' as event_type from results.derived_analysis_table_uc union select *, 'hybrid' as event_type from results.hybrid_analysis_table_uc;"
