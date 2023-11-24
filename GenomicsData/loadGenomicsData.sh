@@ -4,7 +4,7 @@ set -eux
 REGISTRY=harbor.athenafederation.org
 REPOSITORY=distributed-analytics
 IMAGE=genomics-data-loader
-VERSION=1.2.3
+VERSION=1.2.4
 TAG=$VERSION
 THERAPEUTIC_AREA=ATHENA
 CDM_SCHEMA=omopcdm
