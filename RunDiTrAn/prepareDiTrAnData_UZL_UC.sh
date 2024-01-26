@@ -2,7 +2,7 @@ docker login harbor.athenafederation.org
 
 docker pull harbor.athenafederation.org/distributed-analytics/event-generator:0.2.6
 docker pull harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.5
-docker pull harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.2
+docker pull harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.3
 
 mkdir -p ${PWD}/results/hr_events
 mkdir -p ${PWD}/results/hr_analysis
@@ -18,7 +18,7 @@ echo "Set DB permissions"
 docker exec -it postgres psql -U postgres -d OHDSI -c "REASSIGN OWNED BY athena_admin TO ohdsi_admin;grant select on results.analysis_table_uc to ohdsi_app;"
 
 echo "run DiTrAn pipeline script"
-docker run --rm --network feder8-net -v ${PWD}/results/ditran:/script/shareable_results --name disease-explorer-data-preparation -v disease-explorer-config:/script/data --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env DB_ANALYSIS_TABLE_SCHEMA=results --env DB_ANALYSIS_TABLE_NAME=combined_analysis_table_uc --env PIPELINE_CONFIGURATION=uc --env CONFIG_FILENAME=journey_configuration_combined --env LOGGING=INFO harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.2
+docker run --rm --network feder8-net -v ${PWD}/results/ditran:/script/shareable_results --name disease-explorer-data-preparation -v disease-explorer-config:/script/data --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env DB_ANALYSIS_TABLE_SCHEMA=results --env DB_ANALYSIS_TABLE_NAME=combined_analysis_table_uc --env PIPELINE_CONFIGURATION=uc --env CONFIG_FILENAME=journey_configuration_combined --env LOGGING=INFO harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.3
 
 echo "tar results"
 tar -czvf results.tar.gz ${PWD}/results/
