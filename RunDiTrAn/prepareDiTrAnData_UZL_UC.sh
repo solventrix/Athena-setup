@@ -1,8 +1,8 @@
 docker login harbor.athenafederation.org
 
 docker pull harbor.athenafederation.org/distributed-analytics/event-generator:0.2.6
-docker pull harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.5
-docker pull harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.3
+docker pull harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.6
+docker pull harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.4
 
 mkdir -p ${PWD}/results/hr_events
 mkdir -p ${PWD}/results/hr_analysis
@@ -12,13 +12,13 @@ echo "run event generator"
 docker run --rm --network feder8-net -v ${PWD}/results/hr_events:/script/analysis_table_results --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env STUDY_LOGIC=uzl_uc_hr_study --env EPISODE_TABLE_SCHEMA=results --env EPISODE_TABLE_NAME=episode_table_uc_hr --env LOGGING=INFO harbor.athenafederation.org/distributed-analytics/event-generator:0.2.6
 
 echo "create analysis table"
-docker run --rm --network feder8-net -v ${PWD}/results/hr_analysis:/script/results --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env VERSION=1.1.5 --env ANALYSIS_TABLE_SCHEMA=results --env ANALYSIS_TABLE_NAME=analysis_table_uc --env EXPOSURE_TABLE_SCRIPT=exposure_uc_omop53 --env DERIVATE_TABLE_SCRIPT=derivate_uc --env OUTCOME_TABLE_SCRIPT=outcome_uc --env EPISODE_TABLE_SCHEMA=results --env EPISODE_TABLE_NAME=episode_table_uc_hr --env COVARIATE_CONFIGURATION=configuration_uc_hr harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.5
+docker run --rm --network feder8-net -v ${PWD}/results/hr_analysis:/script/results --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env VERSION=1.1.6 --env ANALYSIS_TABLE_SCHEMA=results --env ANALYSIS_TABLE_NAME=analysis_table_uc --env EXPOSURE_TABLE_SCRIPT=exposure_uc_omop53 --env DERIVATE_TABLE_SCRIPT=derivate_uc --env OUTCOME_TABLE_SCRIPT=outcome_uc --env EPISODE_TABLE_SCHEMA=results --env EPISODE_TABLE_NAME=episode_table_uc_hr --env COVARIATE_CONFIGURATION=configuration_uc_hr harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.6
 
 echo "Set DB permissions"
 docker exec -it postgres psql -U postgres -d OHDSI -c "REASSIGN OWNED BY athena_admin TO ohdsi_admin;grant select on results.analysis_table_uc to ohdsi_app;"
 
 echo "run DiTrAn pipeline script"
-docker run --rm --network feder8-net -v ${PWD}/results/ditran:/script/shareable_results --name disease-explorer-data-preparation -v disease-explorer-config:/pipeline/data --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env DB_ANALYSIS_TABLE_SCHEMA=results --env DB_ANALYSIS_TABLE_NAME=analysis_table_uc --env PIPELINE_CONFIGURATION=uc --env CONFIG_FILENAME=journey_configuration --env LOGGING=INFO harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.3
+docker run --rm --network feder8-net -v ${PWD}/results/ditran:/script/shareable_results --name disease-explorer-data-preparation -v disease-explorer-config:/pipeline/data --env THERAPEUTIC_AREA=athena --env INDICATION=uc --env DB_ANALYSIS_TABLE_SCHEMA=results --env DB_ANALYSIS_TABLE_NAME=analysis_table_uc --env PIPELINE_CONFIGURATION=uc --env CONFIG_FILENAME=journey_configuration --env LOGGING=INFO harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.4
 
 echo "tar results"
 tar -czvf results.tar.gz ${PWD}/results/
