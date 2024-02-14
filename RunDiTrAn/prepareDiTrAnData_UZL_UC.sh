@@ -1,7 +1,7 @@
 docker login harbor.athenafederation.org
 
 docker pull harbor.athenafederation.org/distributed-analytics/event-generator:0.2.6
-docker pull harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.6
+docker pull harbor.athenafederation.org/distributed-analytics/analysis-table-generator-uc:1.1.7
 docker pull harbor.athenafederation.org/athena-restricted/ditran-data-pipeline-uc:1.5.4
 
 mkdir -p ${PWD}/results/hr_events
