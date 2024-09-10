@@ -4,7 +4,7 @@ set -eux
 REGISTRY=harbor.athenafederation.org
 REPOSITORY=distributed-analytics
 IMAGE=bcg-analysis-table
-VERSION=1.0.7
+VERSION=1.0.9
 TAG=$VERSION
 
 echo "Log into $REGISTRY"

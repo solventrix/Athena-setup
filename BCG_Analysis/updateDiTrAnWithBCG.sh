@@ -9,7 +9,7 @@ docker login $REGISTRY
 echo "Running BCG analysis..."
 REPOSITORY=distributed-analytics
 IMAGE=bcg-analysis-table
-VERSION=1.0.8
+VERSION=1.0.9
 TAG=$VERSION
 
 docker pull $REGISTRY/$REPOSITORY/$IMAGE:$TAG
